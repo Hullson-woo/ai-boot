@@ -13,8 +13,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://localhost:3306/ai-boot?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8&connectionCollation=utf8mb4_unicode_ci
-    username: root
-    password: root
+    username: your mysql username
+    password: your mysql password
     tomcat:
       initial-size: 10    # 初始化连接数
       max-active: 100     # 最大活跃数
@@ -45,7 +45,7 @@ mybatis-plus:
 # 火山引擎（deepseek）
 ai:
   deepseek:
-    api-key: 9c031c6a-d239-4385-a598-b8a07e1bd67e
+    api-key: your deepseek api-key
     model-v3-id: deepseek-v3-250324
     model-r1-id: deepseek-r1-250528
     model-url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
