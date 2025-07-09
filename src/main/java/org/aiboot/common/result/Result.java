@@ -2,6 +2,7 @@ package org.aiboot.common.result;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -15,14 +16,25 @@ import java.io.Serializable;
  */
 @Data
 @NoArgsConstructor
+@Accessors(chain = true)
 public class Result<T> implements Serializable {
-    // 返回状态码
+    /**
+     * 状态码
+     */
     private Integer code = HttpStatus.OK.value();
-    // 返回提示信息
-    // 用于接收非实体类信息 如ID或字符串
+
+    /**
+     * <p>提示信息</p>
+     */
     private String message;
-    // 返回异常信息
+
+    /**
+     * 异常信息
+     */
     private String error;
-    // 返回实体类对象
+
+    /**
+     * 数据对象
+     */
     private T data;
 }

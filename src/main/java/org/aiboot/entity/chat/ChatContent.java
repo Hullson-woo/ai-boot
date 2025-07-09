@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.aiboot.common.DataEntity;
+import org.aiboot.common.entity.DataEntity;
 
 import java.math.BigDecimal;
 

@@ -6,7 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
-import org.aiboot.common.CommonEntity;
+import org.aiboot.common.entity.CommonEntity;
 
 /**
  * <p>AI工具会话</p>

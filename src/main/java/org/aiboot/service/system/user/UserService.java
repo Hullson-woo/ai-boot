@@ -5,13 +5,15 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.aiboot.dto.system.user.UserDTO;
 import org.aiboot.dto.system.user.UserQueryDTO;
 import org.aiboot.entity.system.user.User;
-import org.aiboot.vo.system.vo.UserVO;
+import org.aiboot.vo.system.user.UserVO;
 
 public interface UserService extends IService<User> {
-    boolean insert(UserDTO dto);
-    boolean update(UserDTO dto);
-    boolean delete(String id);
+    void insert(UserDTO dto);
+    void update(UserDTO dto);
+    void delete(String id);
 
     UserVO get(String id);
+    boolean hasUserName(String userName);
+    UserVO loginByUserNameAndPassword(String userName, String password);
     Page<UserVO> listPage(UserQueryDTO queryDTO);
 }

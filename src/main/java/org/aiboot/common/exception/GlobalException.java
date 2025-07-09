@@ -3,7 +3,6 @@ package org.aiboot.common.exception;
 import lombok.extern.slf4j.Slf4j;
 import org.aiboot.common.result.Result;
 import org.aiboot.common.result.ResultUtil;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -38,11 +37,12 @@ public class GlobalException {
     @ResponseBody
     public Result handleAccessDeniedException(AccessDeniedException e, HttpServletRequest request, HttpServletResponse response) {
         String requestURI = request.getRequestURI();
-        log.error("## Access Denied Exception. request URI: {} ##", requestURI);
-        e.printStackTrace();
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json; charset=UTF-8");
+
+        log.error("---- Access Denied Exception. request URI: {} ----", requestURI);
+        e.printStackTrace();
         return ResultUtil.error(HttpServletResponse.SC_UNAUTHORIZED, "暂无访问权限，请联系管理员授权");
     }
 
@@ -59,12 +59,13 @@ public class GlobalException {
                                                                HttpServletRequest request,
                                                                HttpServletResponse response) {
         String requestURI = request.getRequestURI();
-        log.error("## Request Method Not Support. request URI: {} ##", requestURI);
-        e.printStackTrace();
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setContentType("application/json; charset=UTF-8");
-        return ResultUtil.error(HttpServletResponse.SC_BAD_REQUEST,"请求方式不支持\n" + e.getMessage());
+
+        log.error("---- Request Method Not Support. request URI: {} ----", requestURI);
+        e.printStackTrace();
+        return ResultUtil.error(HttpServletResponse.SC_BAD_REQUEST,"请求错误/参数无效");
     }
 
     /**
@@ -78,16 +79,13 @@ public class GlobalException {
     @ResponseBody
     public Result handleRuntimeException(RuntimeException e, HttpServletRequest request, HttpServletResponse response) {
         String requestURI = request.getRequestURI();
-        log.error("## RuntimeException. request URI: {} ##", requestURI);
-        e.printStackTrace();
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json; charset=UTF-8");
-        String errorMsg = e.getMessage();
-        if (StringUtils.isEmpty(errorMsg)) {
-            errorMsg = e.getClass().getSimpleName();
-        }
-        return ResultUtil.error(String.format("RuntimeException: %s", errorMsg));
+
+        log.error("---- RuntimeException. request URI: {} ----", requestURI);
+        e.printStackTrace();
+        return ResultUtil.error(e.getMessage(), "服务异常，请联系管理员");
     }
 
     /**
@@ -101,16 +99,13 @@ public class GlobalException {
     @ResponseBody
     public Result handleException(Exception e, HttpServletRequest request, HttpServletResponse response) {
         String requestURI = request.getRequestURI();
-        log.error("## Internal Server Error. request URI: {} ##", requestURI);
-        log.error("## Internal Server Error ##", e);
         response.setCharacterEncoding("utf-8");
         response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         response.setContentType("application/json; charset=UTF-8");
-        String errorMsg = e.getMessage();
-        if (StringUtils.isEmpty(errorMsg)) {
-            errorMsg = e.getClass().getSimpleName();
-        }
-        return ResultUtil.error(String.format("Internal Server Error: %s", errorMsg));
+
+        log.error("---- Internal Server Error. request URI: {} ----", requestURI);
+        e.printStackTrace();
+        return ResultUtil.error(e.getMessage(), "服务异常，请联系管理员");
     }
 
     /**
@@ -125,6 +120,6 @@ public class GlobalException {
         String requestURI = request.getRequestURI();
         log.error("## Service Exception. request URI: {} ##", requestURI);
         e.printStackTrace();
-        return ResultUtil.returnCode(e.getCode(),e.getMessage());
+        return ResultUtil.error(e.getMessage());
     }
 }

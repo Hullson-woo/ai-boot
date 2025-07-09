@@ -11,11 +11,23 @@ spring:
     name: aiboot
 
   datasource:
+    # mysql
     tomcat:
       initial-size: 10    # 初始化连接数
       max-active: 100     # 最大活跃数
       min-idle: 20        # 最小空闲数
       max-wait: 60000     # 最长等待时间
+
+    # redis
+    redis:
+      database: 0
+      timeout: 2s # 建立连接超时时间
+      lettuce:
+        pool:
+          max-active: 16    # 最大连接数
+          max-idle: 8       # 最大空闲连接
+          min-idle: 2       # 最小空闲连接
+          max-wait: 1000ms  # 获取连接的最大等待时间
 
   jackson:
     time-zone: GMT+8

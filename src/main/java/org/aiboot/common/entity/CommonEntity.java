@@ -1,4 +1,4 @@
-package org.aiboot.common;
+package org.aiboot.common.entity;
 
 import lombok.Data;
 import lombok.experimental.Accessors;

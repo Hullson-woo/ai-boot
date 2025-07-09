@@ -31,31 +31,41 @@ public class ResultUtil {
      */
     public static <T>Result success(String message, T data) {
         Result result = new Result();
-        result.setCode(HttpStatus.OK.value());
-        result.setMessage(message);
-        result.setData(data);
+        result.setCode(HttpStatus.OK.value())
+                .setMessage(message)
+                .setData(data);
         return result;
     }
 
     public static <T>Result error(Integer code) {
-        return error(code, "");
+        return error(code, null, null);
     }
 
     public static <T>Result error(String error) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), error);
+        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), error, null);
+    }
+
+    public static <T>Result error(Integer code, String error) {
+        return error(code, error, null);
+    }
+
+    public static <T>Result error(String error, String message) {
+        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), error, message);
     }
 
     /**
      * 失败结果返回
-     * @param code      失败状态码
-     * @param error     错误信息
-     * @return          Result
+     * @param code          失败状态码
+     * @param error         错误信息
+     * @param message       提示信息
+     * @return              Result
      * @param <T>
      */
-    public static <T>Result error(Integer code, String error) {
+    public static <T>Result error(Integer code, String error, String message) {
         Result result = new Result();
-        result.setCode(code);
-        result.setError(error);
+        result.setCode(code)
+                .setMessage(message)
+                .setError(error);
         return result;
     }
 

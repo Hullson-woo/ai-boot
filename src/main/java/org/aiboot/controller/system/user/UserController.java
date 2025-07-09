@@ -23,44 +23,20 @@ public class UserController {
 
     @PostMapping("insert")
     public Result insert(@RequestBody UserDTO userDTO) {
-        try {
-            if (userService.insert(userDTO)) {
-                return ResultUtil.success("新增成功");
-            } else {
-                return ResultUtil.error("新增失败");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultUtil.error("新增失败");
-        }
+        userService.insert(userDTO);
+        return ResultUtil.success("创建成功");
     }
 
     @PutMapping("update")
     public Result update(@RequestBody UserDTO userDTO) {
-        try {
-            if (userService.update(userDTO)) {
-                return ResultUtil.success("修改成功");
-            } else {
-                return ResultUtil.error("修改失败");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultUtil.error("修改失败");
-        }
+        userService.update(userDTO);
+        return ResultUtil.success("修改成功");
     }
 
     @DeleteMapping("delete/{id}")
     public Result deete(@PathVariable("id") String id) {
-        try {
-            if (userService.delete(id)) {
-                return ResultUtil.success("删除成功");
-            } else {
-                return ResultUtil.error("删除失败");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultUtil.error("删除失败");
-        }
+        userService.delete(id);
+        return ResultUtil.success("删除成功");
     }
 
     @GetMapping("get")

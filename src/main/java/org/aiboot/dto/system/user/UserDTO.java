@@ -14,4 +14,9 @@ public class UserDTO {
     private String id;
     private String userName;
     private String password;
+    private String nickname;
+    private String avatarUrl;
+    private String gender;
+    private String wechatAppId;
+    private String phone;
 }

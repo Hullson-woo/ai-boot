@@ -11,7 +11,9 @@ import lombok.Data;
  */
 @Data
 public class UserQueryDTO {
-    private String userName;
+    private String nickname;
+    private String phone;
+    private String gender;
 
     private Integer pageNum;
     private Integer pageSize;

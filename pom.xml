@@ -54,6 +54,20 @@
             <version>${mybatis-plus.version}</version>
         </dependency>
 
+        <!-- redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!-- redis pool -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-pool2</artifactId>
+        </dependency>
+
+        <!-- saToken -->
+
         <!-- AI大模型 -->
         <!-- https://github.com/volcengine/volcengine-java-sdk-->
         <dependency>

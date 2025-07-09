@@ -1,5 +1,6 @@
-package org.aiboot.vo.system.vo;
+package org.aiboot.vo.system.user;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -14,7 +15,10 @@ import java.util.Date;
 @Data
 public class UserVO {
     private String id;
-    private String userName;
+    private String nickname;
+    private String avatarUrl;
+    private String gender;
     private String createBy;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createDate;
 }

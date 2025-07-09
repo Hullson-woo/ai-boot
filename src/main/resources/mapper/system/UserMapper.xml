@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.aiboot.mapper.system.user">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.aiboot.vo.system.user.UserVO">
+        <result column="id" property="id" />
+        <result column="nickname" property="nickname" />
+        <result column="avatar_url" property="avatarUrl" />
+        <result column="gender" property="gender" />
+        <result column="create_by" property="createBy" />
+        <result column="create_date" property="createDate" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumns">
+        a.id,
+        a.nickname,
+        a.avatar_url,
+        a.gender,
+        a.create_by,
+        a.create_date
+    </sql>
+
+    <select id="get" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+        FROM sys_user a
+        WHERE a.del_flag = 0
+        AND a.id = #{id}
+    </select>
+
+    <select id="hasUserName" resultType="Boolean">
+        SELECT id FROM sys_user WHERE del_flag = 0 AND user_name = #{userName}
+    </select>
+
+    <select id="loginByUserNameAndPassword" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+        FROM sys_user a
+        WHERE del_flag = 0
+        AND user_name = #{userName}
+        AND password = #{password}
+    </select>
+
+    <select id="listPage" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+        FROM sys_user a
+        <where>
+            a.del_flag = 0
+            <if test="queryDTO != null">
+                <if test="queryDTO.phone != null and queryDTO.phone != ''">
+                    AND a.phone = #{queryDTO.phone}
+                </if>
+                <if test="queryDTO.nickname != null and queryDTO.nickname != ''">
+                    AND a.nickname LIKE CONCAT ('%', #{queryDTO.nickname}, '%')
+                </if>
+            </if>
+        </where>
+        ORDER BY a.create_date DESC
+    </select>
+</mapper>
