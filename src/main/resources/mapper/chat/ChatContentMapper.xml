@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.aiboot.mapper.chat.ChatContentMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.aiboot.vo.chat.ChatContentVO">
+        <result column="chat_session_id" property="chatSessionId" />
+        <result column="message_id" property="messageId" />
+        <result column="parent_message_id" property="parentMessageId" />
+        <result column="message_type" property="messageType" />
+        <result column="message_signal" property="messageSignal" />
+        <result column="message_role" property="messageRole" />
+        <result column="model" property="model" />
+        <result column="system_setup" property="systemSetup" />
+        <result column="content" property="content" />
+        <result column="thinking_content" property="thinkingContent" />
+        <result column="thinking_enabled" property="thinkingEnabled" />
+        <result column="search_enabled" property="searchEnabled" />
+        <result column="token_usage" property="tokenUsage" />
+        <result column="token_cost" property="tokenCost" />
+        <result column="doc_url" property="docUrl" />
+        <result column="image_url" property="imageUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="BaseColumns">
+        a.chat_session_id,
+        a.message_id,
+        a.parent_message_id,
+        a.message_type,
+        a.message_signal,
+        a.message_role,
+        a.model,
+        a.system_setup,
+        a.content,
+        a.thinking_content,
+        a.thinking_enabled,
+        a.search_enabled,
+        a.token_usage,
+        a.token_cost,
+        a.doc_url,
+        a.image_url
+    </sql>
+
+    <select id="getByChatSessionIdAndMessageId" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+        FROM chat_content a
+        WHERE a.del_flag = 0
+        AND a.chat_session_id = #{chatSessionId}
+        AND a.message_id = #{messageId}
+    </select>
+
+    <select id="list" resultMap="BaseResultMap">
+        SELECT <include refid="BaseColumns" />
+        FROM chat_content a
+        WHERE a.del_flag = 0
+        AND a.chat_session_id = #{chatSessionId}
+        ORDER BY a.message_id ASC
+    </select>
+</mapper>

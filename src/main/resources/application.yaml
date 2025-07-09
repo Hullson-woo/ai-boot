@@ -1,0 +1,51 @@
+# setting for service
+server:
+  port: 8081
+  servlet:
+    context-path: /aiboot
+
+
+spring:
+  # 配置应用名称
+  application:
+    name: aiboot
+
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/ai-boot?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8&connectionCollation=utf8mb4_unicode_ci
+    username: root
+    password: root
+    tomcat:
+      initial-size: 10    # 初始化连接数
+      max-active: 100     # 最大活跃数
+      min-idle: 20        # 最小空闲数
+      max-wait: 60000     # 最长等待时间
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+# mybatis-plus
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*Mapper.xml
+  type-aliases-package: org.aiboot.entity
+  configuration:
+    map-underscore-to-camel-case: true  # 下划线转驼峰
+    cache-enabled: true                 # 开启缓存
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印SQL日志
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+  global-config:
+    db-config:
+      db-type: mysql
+      id-type: uuid
+      fiele-strategy: not_empty
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+
+# AI模型调用
+# 火山引擎（deepseek）
+ai:
+  deepseek:
+    api-key: 9c031c6a-d239-4385-a598-b8a07e1bd67e
+    model-v3-id: deepseek-v3-250324
+    model-r1-id: deepseek-r1-250528
+    model-url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
