@@ -11,18 +11,19 @@ spring:
     name: aiboot
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/ai-boot?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&useSSL=false&serverTimezone=GMT%2B8&connectionCollation=utf8mb4_unicode_ci
-    username: your mysql username
-    password: your mysql password
     tomcat:
       initial-size: 10    # 初始化连接数
       max-active: 100     # 最大活跃数
       min-idle: 20        # 最小空闲数
       max-wait: 60000     # 最长等待时间
+
   jackson:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
+
+  # 引入外部配置
+  config:
+    import: optional:classpath:application-secret.yaml
 
 # mybatis-plus
 mybatis-plus:
@@ -31,7 +32,7 @@ mybatis-plus:
   configuration:
     map-underscore-to-camel-case: true  # 下划线转驼峰
     cache-enabled: true                 # 开启缓存
-#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印SQL日志
+    #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl # 打印SQL日志
     log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
   global-config:
     db-config:
@@ -45,7 +46,6 @@ mybatis-plus:
 # 火山引擎（deepseek）
 ai:
   deepseek:
-    api-key: your deepseek api-key
     model-v3-id: deepseek-v3-250324
     model-r1-id: deepseek-r1-250528
     model-url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
