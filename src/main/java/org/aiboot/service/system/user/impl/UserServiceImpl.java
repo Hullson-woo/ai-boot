@@ -51,6 +51,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         String encoderPassword = PasswordEncoder.encodeOfMD5(password);
         user.setPassword(encoderPassword);
         user.preInsert();
+        user.setCreateBy(user.getId());
+        user.setUpdateBy(user.getId());
 
         baseMapper.insert(user);
     }
@@ -105,7 +107,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @return          状态
      */
     @Override
-    public boolean hasUserName(String userName) {
+    public String hasUserName(String userName) {
         return baseMapper.hasUserName(userName);
     }
 

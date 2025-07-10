@@ -3,6 +3,7 @@ package org.aiboot.common.entity;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.aiboot.constant.SystemConstant;
+import org.aiboot.utils.UserUtil;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -25,15 +26,14 @@ public class CommonEntity implements Serializable {
     private Integer delFlag;
     private String remarks;
 
-    private String userId = "0b48216f156d46219c1c11b3a7de41c3";
-
-
     public CommonEntity() {}
 
     public void preInsert() {
         if (this.getDelFlag() == null) {
             this.setDelFlag(SystemConstant.DEL_FLAG_NORMAL);
         }
+
+        String userId = UserUtil.getCurrentUserId();
         this.createBy = userId;
         this.updateBy = userId;
         this.createDate = new Date();
@@ -41,6 +41,7 @@ public class CommonEntity implements Serializable {
     }
 
     public void preUpdate() {
+        String userId = UserUtil.getCurrentUserId();
         this.updateBy = userId;
         this.updateDate = new Date();
     }

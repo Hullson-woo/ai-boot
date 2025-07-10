@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface UserMapper extends BaseMapper<User> {
     UserVO get(@Param("id") String id);
-    boolean hasUserName(@Param("userName") String userName);
+    String hasUserName(@Param("userName") String userName);
     UserVO loginByUserNameAndPassword(@Param("userName") String userName, @Param("password") String password);
     List<UserVO> listPage(Page<UserVO> page, @Param("queryDTO")UserQueryDTO queryDTO);
 }

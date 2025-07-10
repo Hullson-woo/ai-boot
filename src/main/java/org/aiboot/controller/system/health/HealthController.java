@@ -1,5 +1,6 @@
 package org.aiboot.controller.system.health;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aiboot.common.result.Result;
 import org.aiboot.common.result.ResultUtil;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/system/health")
+@Slf4j
 public class HealthController {
 
     @GetMapping("check")

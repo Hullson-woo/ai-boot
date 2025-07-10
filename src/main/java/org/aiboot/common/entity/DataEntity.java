@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.aiboot.constant.SystemConstant;
 import org.aiboot.utils.GenerateIdUtil;
+import org.aiboot.utils.UserUtil;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
@@ -44,14 +45,17 @@ public class DataEntity implements Serializable {
         if (this.getDelFlag() == null) {
             this.setDelFlag(SystemConstant.DEL_FLAG_NORMAL);
         }
-        this.createBy = "admin";
-        this.updateBy = "admin";
+
+        String userId = UserUtil.getCurrentUserId();
+        this.createBy = userId;
+        this.updateBy = userId;
         this.createDate = new Date();
         this.updateDate = new Date();
     }
 
     public void preUpdate() {
-        this.updateBy = "admin";
+        String userId = UserUtil.getCurrentUserId();
+        this.updateBy = userId;
         this.updateDate = new Date();
     }
 

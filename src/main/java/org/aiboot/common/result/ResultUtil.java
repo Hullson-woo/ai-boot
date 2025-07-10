@@ -41,8 +41,8 @@ public class ResultUtil {
         return error(code, null, null);
     }
 
-    public static <T>Result error(String error) {
-        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), error, null);
+    public static <T>Result error(String message) {
+        return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), null, message);
     }
 
     public static <T>Result error(Integer code, String error) {

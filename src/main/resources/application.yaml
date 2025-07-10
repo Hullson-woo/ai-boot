@@ -21,13 +21,13 @@ spring:
     # redis
     redis:
       database: 0
-      timeout: 2s # 建立连接超时时间
+      timeout: 5s # 建立连接超时时间
       lettuce:
         pool:
           max-active: 16    # 最大连接数
-          max-idle: 8       # 最大空闲连接
-          min-idle: 2       # 最小空闲连接
-          max-wait: 1000ms  # 获取连接的最大等待时间
+          max-idle: 12       # 最大空闲连接
+          min-idle: 8       # 最小空闲连接
+          max-wait: 5000ms  # 获取连接的最大等待时间
 
   jackson:
     time-zone: GMT+8
@@ -53,6 +53,22 @@ mybatis-plus:
       fiele-strategy: not_empty
       logic-delete-value: 1
       logic-not-delete-value: 0
+
+#satoken
+sa-token:
+  token-name: Authorization
+  timeout: 259200
+  active-timeout: -1
+  token-style: uuid
+  is-concurrent: false
+  is-share: false
+  is-log: false
+
+auth:
+  prefix-key: "system:user:"
+  token-name: Authorization
+  timeout: 25920000 # 毫秒（3天）
+
 
 # AI模型调用
 # 火山引擎（deepseek）

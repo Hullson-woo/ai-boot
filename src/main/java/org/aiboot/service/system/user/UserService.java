@@ -13,7 +13,7 @@ public interface UserService extends IService<User> {
     void delete(String id);
 
     UserVO get(String id);
-    boolean hasUserName(String userName);
+    String hasUserName(String userName);
     UserVO loginByUserNameAndPassword(String userName, String password);
     Page<UserVO> listPage(UserQueryDTO queryDTO);
 }

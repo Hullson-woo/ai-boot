@@ -15,6 +15,8 @@
         <mysql-version>5.1.38</mysql-version>
         <druid.version>1.2.6</druid.version>
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
+        <sa-token.version>1.44.0</sa-token.version>
+        <sa-token-redis.version>1.44.0</sa-token-redis.version>
         <fastjson.version>1.2.83</fastjson.version>
         <commons-text.version>1.6</commons-text.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -67,6 +69,11 @@
         </dependency>
 
         <!-- saToken -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>${sa-token.version}</version>
+        </dependency>
 
         <!-- AI大模型 -->
         <!-- https://github.com/volcengine/volcengine-java-sdk-->
@@ -77,6 +84,13 @@
         </dependency>
 
         <!-- 工具依赖 -->
+        <!-- fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+
         <!-- lang3 -->
         <dependency>
             <groupId>org.apache.commons</groupId>
@@ -102,13 +116,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
-        </dependency>
-
-        <!-- fastjson -->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
         </dependency>
 
         <dependency>
