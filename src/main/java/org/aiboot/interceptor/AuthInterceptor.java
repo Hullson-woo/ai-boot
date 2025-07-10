@@ -1,5 +1,6 @@
 package org.aiboot.interceptor;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.alibaba.fastjson.JSONObject;
 import org.aiboot.common.result.Result;
 import org.aiboot.common.result.ResultUtil;
@@ -43,10 +44,10 @@ public class AuthInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        String token = headerToken.split("Bearer ")[1];
-        String key = prefixKey + token;
-        Object tokenInfo = redisTemplate.opsForValue().get(key);
-        if (tokenInfo == null) {
+        // 通过SaToken校验是否登录
+        try {
+            StpUtil.checkLogin();
+        } catch (Exception e) {
             Result result = ResultUtil.error(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized", "请先登录");
 
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

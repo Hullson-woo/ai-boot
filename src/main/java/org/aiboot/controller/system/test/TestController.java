@@ -1,8 +1,8 @@
 package org.aiboot.controller.system.test;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.aiboot.common.result.Result;
 import org.aiboot.common.result.ResultUtil;
-import org.aiboot.utils.UserUtil;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +19,8 @@ public class TestController {
 
     @GetMapping("saveToken")
     public Result saveToken() {
-        String userId = UserUtil.getCurrentUserId();
-        return ResultUtil.success(userId);
+        StpUtil.checkLogin();
+        String id = StpUtil.getLoginIdAsString();
+        return ResultUtil.success(id);
     }
 }

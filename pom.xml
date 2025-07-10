@@ -75,6 +75,13 @@
             <version>${sa-token.version}</version>
         </dependency>
 
+        <!-- saToken-redis -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-redis-template</artifactId>
+            <version>${sa-token-redis.version}</version>
+        </dependency>
+
         <!-- AI大模型 -->
         <!-- https://github.com/volcengine/volcengine-java-sdk-->
         <dependency>

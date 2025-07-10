@@ -18,8 +18,12 @@ public class UserUtil {
         RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
         HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
         String token = request.getHeader("Authorization");
-        UserVO userVO = SaTokenUtil.parseToken(token);
-
+        UserVO userVO = null;
+        try {
+            userVO = SaTokenUtil.parseToken(token);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return userVO;
     }
 

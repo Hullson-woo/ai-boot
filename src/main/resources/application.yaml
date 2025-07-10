@@ -63,11 +63,12 @@ sa-token:
   is-concurrent: false
   is-share: false
   is-log: false
+  token-prefix: Bearer
 
 auth:
   prefix-key: "system:user:"
   token-name: Authorization
-  timeout: 25920000 # 毫秒（3天）
+  timeout: 259200000 # 毫秒（3天）
 
 
 # AI模型调用
