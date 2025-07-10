@@ -96,11 +96,13 @@ public class ArkServiceUtil {
                     log.info("---- 用户终止对话\t{} ----", chatSessionId);
                     sendOnComplete(emitter, reasoningJoiner, messageJoiner, callback, false);
                     emitter.complete();
+                    sessionDisposables.remove(chatSessionId);
                 })
                 .doOnComplete(() -> {
                     log.info("---- 对话输出已完成\t{} ----", chatSessionId);
                     sendOnComplete(emitter, reasoningJoiner, messageJoiner, callback, true);
                     emitter.complete();
+                    sessionDisposables.remove(chatSessionId);
                 })
                 .doOnError(Throwable::printStackTrace)
                 .subscribe(choice -> {

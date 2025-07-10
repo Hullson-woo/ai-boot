@@ -51,10 +51,10 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
         Integer requestMessageId = Optional.ofNullable(chatContentDTO.getParentMessageId())
                 .map(parentMessageId -> parentMessageId + 1)
                 .orElse(1);
-        chatContentDTO.setMessageId(requestMessageId);
-        ChatContent chatContent = save(chatContentDTO);
-
         Integer responseMessageId = requestMessageId + 1;
+
+        chatContentDTO.setMessageId(requestMessageId);
+        save(chatContentDTO);
 
         // 构建AI对话消息
         List<ChatMessage> chatMessages = arkServiceUtil.buildChatMessage(Collections.singletonList(chatContentDTO.getContent()));
@@ -105,8 +105,12 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
     @Override
     public SseEmitter regenerate(ChatRegenerateDTO regenerateDTO) {
         Integer responseMessageId = regenerateDTO.getCurrentMessageId() + 1;
-        ChatContentVO chatContentVO = getByChatSessionIdAndMessageId(regenerateDTO.getChatSessionId(), regenerateDTO.getCurrentMessageId());
-        ChatContentVO requestChatContentVo = getByChatSessionIdAndMessageId(chatContentVO.getChatSessionId(), chatContentVO.getParentMessageId());
+        ChatContentVO chatContentVO = getByChatSessionIdAndMessageId(
+                regenerateDTO.getChatSessionId(),
+                regenerateDTO.getCurrentMessageId());
+        ChatContentVO requestChatContentVo = getByChatSessionIdAndMessageId(
+                chatContentVO.getChatSessionId(),
+                chatContentVO.getParentMessageId());
 
         // 构建AI对话消息
         List<ChatMessage> chatMessages = arkServiceUtil.buildChatMessage(
@@ -178,7 +182,6 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
         chatContent.preInsert();
 
         baseMapper.insert(chatContent);
-
         return chatContent;
     }
 
@@ -191,6 +194,7 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
     private SseEmitter send(ArkMessageBody messageBody) throws IOException {
         // 发送消息
         SseEmitter emitter = arkServiceUtil.send(messageBody,
+                // 发送完成回调
                 result -> {
                     String messageSignal = ChatConstant.MESSAGE_SIGNAL_NORMAL;
                     StringJoiner reasoningJoiner = result.getObject("reasoning", StringJoiner.class);

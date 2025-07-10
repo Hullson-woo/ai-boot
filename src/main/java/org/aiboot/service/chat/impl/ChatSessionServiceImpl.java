@@ -1,20 +1,18 @@
 package org.aiboot.service.chat.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 import org.aiboot.common.exception.ServiceException;
-import org.aiboot.constant.SystemConstant;
-import org.aiboot.mapper.chat.ChatSessionMapper;
 import org.aiboot.entity.chat.ChatSession;
+import org.aiboot.mapper.chat.ChatSessionMapper;
 import org.aiboot.service.chat.ChatSessionService;
+import org.aiboot.utils.UserUtil;
 import org.aiboot.vo.chat.ChatSessionVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 /**
  * <p>AI工具会话</p>
@@ -35,9 +33,10 @@ public class ChatSessionServiceImpl
      */
     @Override
     public String create() {
-        String userId = "0b48216f156d46219c1c11b3a7de41c3";
-        ChatSession chatSession = new ChatSession();
+        String userId = UserUtil.getCurrentUserId();
         String chatSessionId = UUID.randomUUID().toString();
+
+        ChatSession chatSession = new ChatSession();
         chatSession.setChatSessionId(chatSessionId)
                 .setUserId(userId)
                 .setTitle("新会话");
@@ -45,10 +44,10 @@ public class ChatSessionServiceImpl
 
         try {
             baseMapper.insert(chatSession);
-            log.info("---- ChatSessionServiceImpl#create 创建会话 {} ----", chatSessionId);
+            log.info("---- 创建会话 {} ----", chatSessionId);
             return chatSessionId;
         } catch (Exception e) {
-            log.error("---- ChatSessionServiceImpl#create 创建会话失败 ----");
+            log.error("---- 创建会话失败 ----");
             e.printStackTrace();
             throw new ServiceException("创建会话失败");
         }
@@ -61,15 +60,7 @@ public class ChatSessionServiceImpl
      */
     @Override
     public void delete(String chatSessionId) {
-        LambdaQueryWrapper<ChatSession> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ChatSession::getDelFlag, SystemConstant.DEL_FLAG_NORMAL)
-                .eq(ChatSession::getChatSessionId, chatSessionId);
-
-        ChatSession chatSession = baseMapper.selectOne(wrapper);
-        chatSession.setDelFlag(SystemConstant.DEL_FLAG_DELETE);
-        chatSession.preUpdate();
-
-        baseMapper.updateById(chatSession);
+        baseMapper.delete(chatSessionId);
     }
 
     /**
@@ -79,10 +70,10 @@ public class ChatSessionServiceImpl
      */
     @Override
     public void rename(String chatSessionId, String title) {
-        LambdaQueryWrapper<ChatSession> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ChatSession::getDelFlag, SystemConstant.DEL_FLAG_NORMAL)
-                .eq(ChatSession::getChatSessionId, chatSessionId);
-        ChatSession chatSession = baseMapper.selectOne(wrapper);
+        ChatSessionVO chatSessionVO = get(chatSessionId);
+
+        ChatSession chatSession = new ChatSession();
+        BeanUtils.copyProperties(chatSessionVO, chatSession);
         chatSession.setTitle(title);
         chatSession.preUpdate();
         baseMapper.updateById(chatSession);
@@ -95,14 +86,7 @@ public class ChatSessionServiceImpl
      */
     @Override
     public ChatSessionVO get(String chatSessionId) {
-        LambdaQueryWrapper<ChatSession> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ChatSession::getDelFlag, SystemConstant.DEL_FLAG_NORMAL)
-                .eq(ChatSession::getChatSessionId, chatSessionId);
-        ChatSession chatSession = baseMapper.selectOne(wrapper);
-
-        ChatSessionVO chatSessionVO = new ChatSessionVO();
-        BeanUtils.copyProperties(chatSession, chatSessionVO);
-        return chatSessionVO;
+        return baseMapper.get(chatSessionId);
     }
 
     /**
@@ -111,20 +95,8 @@ public class ChatSessionServiceImpl
      */
     @Override
     public List<ChatSessionVO> listHistory() {
-        String userId = "0b48216f156d46219c1c11b3a7de41c3";
+        String userId = UserUtil.getCurrentUserId();
 
-        LambdaQueryWrapper<ChatSession> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(ChatSession::getDelFlag, SystemConstant.DEL_FLAG_NORMAL)
-                .eq(ChatSession::getUserId, userId)
-                .orderByDesc(ChatSession::getCreateDate);
-        List<ChatSession> chatSessions = baseMapper.selectList(wrapper);
-
-        List<ChatSessionVO> chatSessionVOS = chatSessions.stream()
-                .map(entity -> {
-                    ChatSessionVO chatSessionVO = new ChatSessionVO();
-                    BeanUtils.copyProperties(entity, chatSessionVO);
-                    return chatSessionVO;
-                }).collect(Collectors.toList());
-        return chatSessionVOS;
+        return baseMapper.listHistory(userId);
     }
 }
