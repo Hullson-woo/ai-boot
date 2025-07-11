@@ -78,3 +78,7 @@ ai:
     model-v3-id: deepseek-v3-250324
     model-r1-id: deepseek-r1-250528
     model-url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
+
+  kimi:
+    model-id: moonshot-v1-32k
+    model-url: https://ark.cn-beijing.volces.com/api/v3/chat/completions

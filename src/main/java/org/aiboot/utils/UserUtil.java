@@ -1,11 +1,7 @@
 package org.aiboot.utils;
 
+import cn.dev33.satoken.stp.StpUtil;
 import org.aiboot.vo.system.user.UserVO;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * <p>用户工具</p>
@@ -15,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class UserUtil {
     public static UserVO getCurrentUser() {
-        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-        HttpServletRequest request = ((ServletRequestAttributes) requestAttributes).getRequest();
-        String token = request.getHeader("Authorization");
+        String token = StpUtil.getTokenValue();
         UserVO userVO = null;
         try {
             userVO = SaTokenUtil.parseToken(token);

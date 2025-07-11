@@ -8,6 +8,7 @@
         <result column="chat_session_id" property="chatSessionId" />
         <result column="user_id" property="userId" />
         <result column="title" property="title" />
+        <result column="create_date" property="createDate" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -15,7 +16,8 @@
         a.id,
         a.chat_session_id,
         a.user_id,
-        a.title
+        a.title,
+        a.create_date
     </sql>
 
     <update id="delete">

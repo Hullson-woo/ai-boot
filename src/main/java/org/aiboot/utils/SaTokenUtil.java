@@ -15,8 +15,7 @@ import java.io.IOException;
 public class SaTokenUtil {
     private static  RedisTemplate<String, Object> redisTemplate = SpringContextHolder.getBean(RedisTemplate.class);
 
-    public static UserVO parseToken(String headerToken) throws IOException {
-        String token = headerToken.split("Bearer ")[1];
+    public static UserVO parseToken(String token) throws IOException {
         Object tokenInfo = redisTemplate.opsForValue().get("system:user:" + token);
         if (tokenInfo == null) {
             RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();

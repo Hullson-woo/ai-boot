@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
@@ -70,6 +71,8 @@ public class ArkServiceUtil {
      * @param callback          回调者
      */
     public SseEmitter send(ArkMessageBody body,  Consumer<JSONObject> callback) throws IOException {
+        System.out.println("Current thread: " + Thread.currentThread().getName());
+        System.out.println("Request context: " + RequestContextHolder.getRequestAttributes());
         String chatSessionId = body.getChatSessionId();
         String model = body.getModel();
         List<ChatMessage> chatMessages = body.getChatMessages();
@@ -96,13 +99,11 @@ public class ArkServiceUtil {
                     log.info("---- 用户终止对话\t{} ----", chatSessionId);
                     sendOnComplete(emitter, reasoningJoiner, messageJoiner, callback, false);
                     emitter.complete();
-                    sessionDisposables.remove(chatSessionId);
                 })
                 .doOnComplete(() -> {
                     log.info("---- 对话输出已完成\t{} ----", chatSessionId);
                     sendOnComplete(emitter, reasoningJoiner, messageJoiner, callback, true);
                     emitter.complete();
-                    sessionDisposables.remove(chatSessionId);
                 })
                 .doOnError(Throwable::printStackTrace)
                 .subscribe(choice -> {
@@ -114,16 +115,17 @@ public class ArkServiceUtil {
                                     .data(replyMessage.getReasoningContent(), MediaType.TEXT_PLAIN));
                             reasoningJoiner.add(replyMessage.getReasoningContent());
                         } else {
-                            emitter.send(SseEmitter.event()
-                                    .name(ChatConstant.MESSAGE_TYPE_MESSAGE)
-                                    .data(replyMessage.getContent(), MediaType.TEXT_PLAIN));
-                            Object content = replyMessage.getContent();
-                            if (content instanceof String) {
-                                messageJoiner.add((String) content);
-                            } else {
-                                messageJoiner.add(JSONObject.toJSONString(replyMessage.getContent()));
+                            if (replyMessage.getContent() != null) {
+                                emitter.send(SseEmitter.event()
+                                        .name(ChatConstant.MESSAGE_TYPE_MESSAGE)
+                                        .data(replyMessage.getContent(), MediaType.TEXT_PLAIN));
+                                Object content = replyMessage.getContent();
+                                if (content instanceof String) {
+                                    messageJoiner.add((String) content);
+                                } else {
+                                    messageJoiner.add(JSONObject.toJSONString(replyMessage.getContent()));
+                                }
                             }
-
                         }
                     }
                 });
@@ -200,8 +202,10 @@ public class ArkServiceUtil {
         result.put("reasoning", reasoningJoiner);
         result.put("message", messageJoiner);
         result.put("status", isComplete ? ChatConstant.CHAT_END_STATUS_FINISH : ChatConstant.CHAT_END_STATUS_TERMINATE);
-
+        System.out.println("Current thread: " + Thread.currentThread().getName());
+        System.out.println("Request context: " + RequestContextHolder.getRequestAttributes());
         callback.accept(result);
+
     }
 
 

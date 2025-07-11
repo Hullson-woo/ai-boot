@@ -15,15 +15,20 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class AiModelUtil {
     @Value("${ai.deepseek.model-v3-id}")
-    private String modelV3;
+    private String deepseekV3;
     @Value("${ai.deepseek.model-r1-id}")
-    private String modelR1;
+    private String deepseekR1;
+    @Value("${ai.kimi.model-id}")
+    private String kimiV1;
 
     public String matchAiModel(String model, Boolean thinkingEnable) {
         String executorModel;
         switch (model) {
             case "deepseek":
-                executorModel = thinkingEnable ? modelR1 : modelV3;
+                executorModel = thinkingEnable ? deepseekR1 : deepseekV3;
+                break;
+            case "kimi":
+                executorModel = kimiV1;
                 break;
             default:
                 log.error("---- AiModelUtil#matchAiModel 未匹配到AI调用模型\n 模型名称：{}\t是否开启深度思考：{} ----", model, thinkingEnable);
