@@ -17,6 +17,7 @@
         <mybatis-plus.version>3.4.2</mybatis-plus.version>
         <sa-token.version>1.44.0</sa-token.version>
         <sa-token-redis.version>1.44.0</sa-token-redis.version>
+        <volcengine.version>0.2.22</volcengine.version>
         <fastjson.version>1.2.83</fastjson.version>
         <commons-text.version>1.6</commons-text.version>
         <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -87,7 +88,7 @@
         <dependency>
             <groupId>com.volcengine</groupId>
             <artifactId>volcengine-java-sdk-ark-runtime</artifactId>
-            <version>LATEST</version>
+            <version>${volcengine.version}</version>
         </dependency>
 
         <!-- 工具依赖 -->

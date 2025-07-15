@@ -1,6 +1,5 @@
 package org.aiboot.service.chat.impl;
 
-import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.volcengine.ark.runtime.model.completion.chat.ChatMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +14,7 @@ import org.aiboot.dto.chat.ChatRegenerateDTO;
 import org.aiboot.entity.chat.ChatContent;
 import org.aiboot.mapper.chat.ChatContentMapper;
 import org.aiboot.service.chat.ChatContentService;
-import org.aiboot.utils.SaTokenUtil;
 import org.aiboot.vo.chat.ChatContentVO;
-import org.aiboot.vo.system.user.UserVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -193,7 +190,6 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
      * @throws IOException      IOException
      */
     private SseEmitter send(ArkMessageBody messageBody) throws IOException {
-        UserVO userVO = SaTokenUtil.parseToken(StpUtil.getTokenValue());
         // 发送消息
         SseEmitter emitter = arkServiceUtil.send(messageBody,
                 // 发送完成回调
@@ -220,9 +216,7 @@ public class ChatContentServiceImpl extends ServiceImpl<ChatContentMapper, ChatC
                             .setThinkingEnabled(messageBody.getThinkingEnabled())
                             .setSearchEnabled(messageBody.getSearchEnabled())
                             .setCreateDate(new Date())
-                            .setCreateBy(userVO.getId())
                             .setUpdateDate(new Date())
-                            .setUpdateBy(userVO.getId())
                             .setDelFlag(SystemConstant.DEL_FLAG_NORMAL);
 
                     baseMapper.insert(replyChatContent);
